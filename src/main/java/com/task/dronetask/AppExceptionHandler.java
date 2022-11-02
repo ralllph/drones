@@ -1,6 +1,8 @@
 package com.task.dronetask;
 
 import com.task.dronetask.exception.DroneNotFoundException;
+import com.task.dronetask.exception.DroneUnableToLoadException;
+import com.task.dronetask.exception.DroneWeightExceededException;
 import com.task.dronetask.exception.ErrorResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,12 +33,25 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     //the parameter is the contact not found exception
     public ResponseEntity<Object> handleDDroneNotFoundException(DroneNotFoundException exception){
         //create an object of Error response,, exception .getLocalizedMessage( ) is getting the message we passed in super in DroneNotFound exception
-        //notice that our message is a list it=n in the error class so we make the error object be returned as a json array that supplies alist
+        //notice that our message is a list it=n in the error class so we make the error object be returned as a json array that supplies  alist
         ErrorResponse error = new ErrorResponse(Arrays.asList(exception.getLocalizedMessage()));
         //now we return the error object
         //remember response entity  and serialization where spring boot would go to errResponse and change the object to json before returning it
         return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(DroneWeightExceededException.class)
+    public ResponseEntity<Object> handleDroneWeightExceededException(DroneWeightExceededException exception){
+        ErrorResponse error = new ErrorResponse(Arrays.asList(exception.getLocalizedMessage()));
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DroneUnableToLoadException.class)
+    public ResponseEntity<Object> handleDroneUnableToLoadException(DroneUnableToLoadException exception){
+        ErrorResponse error = new ErrorResponse(Arrays.asList(exception.getLocalizedMessage()));
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
 
     //type handleMethod ... to override
     //This method is where we handle those validations like not blank

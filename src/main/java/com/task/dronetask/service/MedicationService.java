@@ -1,7 +1,9 @@
 package com.task.dronetask.service;
 
+import com.task.dronetask.dto.MedDto;
+import com.task.dronetask.dto.RegMedDto;
 import com.task.dronetask.entity.Medication;
 
 public interface MedicationService {
-    Medication saveMedication(Medication med, Long droneId);
+    RegMedDto saveMedication(MedDto medDto, Long droneId);
 }

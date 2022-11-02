@@ -1,18 +1,28 @@
 package com.task.dronetask.service;
 
+import com.task.dronetask.dto.DroneDto;
+import com.task.dronetask.dto.MedDto;
+import com.task.dronetask.dto.RegDroneDto;
+import com.task.dronetask.dto.RegMedDto;
 import com.task.dronetask.entity.Drones;
+import com.task.dronetask.entity.Medication;
 
 import java.util.List;
 
 public interface DroneService {
     //register drone
-    Drones registerDrone(Drones drone);
+    RegDroneDto registerDrone(DroneDto droneDto);
     //get drone battery level
-    double getDroneBattery(Long id);
+    int getDroneBattery(Long id);
     //find drone by id
-    Drones findDrone(Long id);
+    DroneDto findDrone(Long id);
     //delete a drone
     void deleteDrone(Long id);
     //get all drones
-    List<Drones> getAllDrones();
+    List<DroneDto> getAllDrones();
+    //find medications assigned to a drone
+    List<RegMedDto> findDroneMeds(Long droneId);
+    //check available drones for loading
+    List<DroneDto> availableDrones();
+
 }

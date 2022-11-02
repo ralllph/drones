@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "medication")
@@ -25,19 +26,15 @@ public class Medication {
     private Long id;
 
     @Column(name = "name")
-    @NotBlank(message = "name can't be blank")
     private String name;
 
     @Column(name = "weight")
-    @NotBlank(message = "weight can't be blank")
-    private String weight;
+    private BigDecimal weight;
 
-    @Column(name =  "code")
-    @NotBlank(message = "code can't be blank")
+    @Column(name = "code")
     private String code;
 
     @Column(name = "image")
-    @NotBlank(message = "image can't be blank")
     private String image;
 
     //here many medicationes can be assigned to one drone
