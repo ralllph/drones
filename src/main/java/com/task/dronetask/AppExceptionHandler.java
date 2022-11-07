@@ -1,9 +1,6 @@
 package com.task.dronetask;
 
-import com.task.dronetask.exception.DroneNotFoundException;
-import com.task.dronetask.exception.DroneUnableToLoadException;
-import com.task.dronetask.exception.DroneWeightExceededException;
-import com.task.dronetask.exception.ErrorResponse;
+import com.task.dronetask.exception.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +49,11 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(DroneAlreadyExistsException.class)
+    public ResponseEntity<Object> handleDroneNameExistsException(DroneAlreadyExistsException exception){
+        ErrorResponse error = new ErrorResponse(Arrays.asList(exception.getLocalizedMessage()));
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 
     //type handleMethod ... to override
     //This method is where we handle those validations like not blank

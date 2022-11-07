@@ -35,7 +35,7 @@ public class Drones {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "serial_number")
+    @Column(name = "serial_number", unique = true)
     private String serialNumber;
 
     @Enumerated(EnumType.STRING)

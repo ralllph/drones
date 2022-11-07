@@ -3,23 +3,20 @@ package com.task.dronetask.service;
 import com.task.dronetask.converter.DroneConverterImpl;
 import com.task.dronetask.converter.MedConverter;
 import com.task.dronetask.dto.DroneDto;
-import com.task.dronetask.dto.MedDto;
 import com.task.dronetask.dto.RegDroneDto;
 import com.task.dronetask.dto.RegMedDto;
 import com.task.dronetask.entity.Drones;
-import com.task.dronetask.entity.Medication;
 import com.task.dronetask.enums.State;
+import com.task.dronetask.exception.DroneAlreadyExistsException;
 import com.task.dronetask.exception.DroneNotFoundException;
 import com.task.dronetask.exception.DroneUnableToLoadException;
 import com.task.dronetask.repository.DroneRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.zip.DataFormatException;
 
 @AllArgsConstructor
 @Service
@@ -40,10 +37,11 @@ public class DroneServiceImpl implements  DroneService{
                 throw new DroneUnableToLoadException();
             }
         }
-            //save entity using the save
-            Drones savedDrone = droneRepository.save(droneEntity);
-            //convert back to dto to mask data
-            return droneConverter.droneEntityToRegDroneDto(savedDrone);
+        droneNameExists(droneEntity);
+        //save entity using the save
+        Drones savedDrone = droneRepository.save(droneEntity);
+        //convert back to dto to mask data
+        return droneConverter.droneEntityToRegDroneDto(savedDrone);
     }
 
     //find a specific drone
@@ -109,5 +107,15 @@ public class DroneServiceImpl implements  DroneService{
                 dronesList.add(drone);
             }
         return dronesList;
+    }
+
+    //check if drone name already exists
+    public void droneNameExists(Drones drone){
+        List<DroneDto> allDrones = getAllDrones();
+        for (DroneDto eachDrone: allDrones){
+            if(eachDrone.getSerialNumber().equals(drone.getSerialNumber())){
+                throw new DroneAlreadyExistsException();
+            }
+        }
     }
 }
