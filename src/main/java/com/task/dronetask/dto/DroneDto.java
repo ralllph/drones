@@ -5,6 +5,7 @@ import com.task.dronetask.enums.Model;
 import com.task.dronetask.enums.State;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 
 import javax.persistence.GeneratedValue;
@@ -33,6 +34,8 @@ public class DroneDto {
     private BigDecimal weightLimit;
 
     @NotNull(message = "Enter a valid battery capacity")
+    @Min(value = 1, message = "battery percent less than 1 ")
+    @Max(value = 100, message = "maximum battery percent exceeded")
     private int batteryCapacity;
 
     private State state;

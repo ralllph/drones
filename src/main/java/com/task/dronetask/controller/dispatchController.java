@@ -37,7 +37,7 @@ public class dispatchController {
     //we use the @Valid to perform your validations like notblank in the entity
     //its placed where the handler recieves the object from the sender cuz this is where json is deserialized to object
     //ehich are now placed using setters and getters
-    public ResponseEntity<RegDroneDto> registerDrone(@Valid  @RequestBody DroneDto droneDto){
+    public ResponseEntity<RegDroneDto> registerDrone(@RequestBody @Valid  DroneDto droneDto){
         return new ResponseEntity<>(droneService.registerDrone(droneDto), HttpStatus.CREATED);
     }
 

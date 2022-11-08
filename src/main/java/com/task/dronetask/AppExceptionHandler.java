@@ -43,18 +43,6 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(DroneUnableToLoadException.class)
-    public ResponseEntity<Object> handleDroneUnableToLoadException(DroneUnableToLoadException exception){
-        ErrorResponse error = new ErrorResponse(Arrays.asList(exception.getLocalizedMessage()));
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(DroneAlreadyExistsException.class)
-    public ResponseEntity<Object> handleDroneNameExistsException(DroneAlreadyExistsException exception){
-        ErrorResponse error = new ErrorResponse(Arrays.asList(exception.getLocalizedMessage()));
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
     //type handleMethod ... to override
     //This method is where we handle those validations like not blank
     //when spring boot performs @valid check, the errors are packaged in a binding result which you can access here
@@ -74,4 +62,18 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         //now we can pass a new object containing the errorList as the parameter for the new constructor
         return new ResponseEntity<>(new ErrorResponse(errorList),HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(DroneUnableToLoadException.class)
+    public ResponseEntity<Object> handleDroneUnableToLoadException(DroneUnableToLoadException exception){
+        ErrorResponse error = new ErrorResponse(Arrays.asList(exception.getLocalizedMessage()));
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DroneAlreadyExistsException.class)
+    public ResponseEntity<Object> handleDroneNameExistsException(DroneAlreadyExistsException exception){
+        ErrorResponse error = new ErrorResponse(Arrays.asList(exception.getLocalizedMessage()));
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+
 }

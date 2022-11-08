@@ -32,11 +32,11 @@ public class DroneServiceImpl implements  DroneService{
     public RegDroneDto registerDrone(DroneDto drone) {
         //convert the deserialized drone dto to an entity in order to save using service
         Drones droneEntity = droneConverter.droneDtoToEntity(drone);
-        if(drone.getState().equals(State.LOADING)){
+       /* if(drone.getState().equals(State.LOADING)){
             if(droneEntity.getBatteryCapacity() < 25){
                 throw new DroneUnableToLoadException();
             }
-        }
+        }*/
         droneNameExists(droneEntity);
         //save entity using the save
         Drones savedDrone = droneRepository.save(droneEntity);
