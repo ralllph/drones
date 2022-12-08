@@ -26,18 +26,15 @@ public class DroneServiceImpl implements  DroneService{
     DroneRepository droneRepository;
     DroneConverterImpl droneConverter;
     MedConverter medConverter;
+    MedicationService medService;
 
     //register drone
     @Override
     public RegDroneDto registerDrone(DroneDto drone) {
         //convert the deserialized drone dto to an entity in order to save using service
         Drones droneEntity = droneConverter.droneDtoToEntity(drone);
-       /* if(drone.getState().equals(State.LOADING)){
-            if(droneEntity.getBatteryCapacity() < 25){
-                throw new DroneUnableToLoadException();
-            }
-        }*/
         droneNameExists(droneEntity);
+        isBatteryOkay(drone,droneEntity,State.LOADING,25);
         //save entity using the save
         Drones savedDrone = droneRepository.save(droneEntity);
         //convert back to dto to mask data
@@ -115,6 +112,15 @@ public class DroneServiceImpl implements  DroneService{
         for (DroneDto eachDrone: allDrones){
             if(eachDrone.getSerialNumber().equals(drone.getSerialNumber())){
                 throw new DroneAlreadyExistsException();
+            }
+        }
+    }
+
+    //check if drone is free to load
+    public void isBatteryOkay(DroneDto drone, Drones droneEntity, State state, int batteryLevel){
+            if(drone.getState().equals(state)){
+            if(droneEntity.getBatteryCapacity() < batteryLevel){
+                throw new DroneUnableToLoadException();
             }
         }
     }

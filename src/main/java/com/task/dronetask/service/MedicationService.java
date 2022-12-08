@@ -6,4 +6,5 @@ import com.task.dronetask.entity.Medication;
 
 public interface MedicationService {
     RegMedDto saveMedication(MedDto medDto, Long droneId);
+    void deLeteMedById(Long medId);
 }

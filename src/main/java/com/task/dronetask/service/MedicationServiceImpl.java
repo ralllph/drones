@@ -2,7 +2,6 @@ package com.task.dronetask.service;
 
 import com.task.dronetask.converter.MedConverterImpl;
 import com.task.dronetask.dto.MedDto;
-import com.task.dronetask.dto.RegDroneDto;
 import com.task.dronetask.dto.RegMedDto;
 import com.task.dronetask.entity.Drones;
 import com.task.dronetask.entity.Medication;
@@ -11,7 +10,6 @@ import com.task.dronetask.exception.DroneWeightExceededException;
 import com.task.dronetask.repository.DroneRepository;
 import com.task.dronetask.repository.MedicationRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -43,7 +41,7 @@ public class MedicationServiceImpl implements MedicationService{
             newWeight = med.getWeight();
             //the drones actual weight
             droneWeight = drone.get().getWeightLimit();
-            if(totDronePrevMeds.add(newWeight).compareTo(droneWeight) <=0){
+            if(checkDroneOverload(totDronePrevMeds,newWeight,droneWeight)){
                 med.setDrone(drone.get());
                 return medConverter.medEntityToRegDto(medicationRepository.save(med));
             }
@@ -55,6 +53,11 @@ public class MedicationServiceImpl implements MedicationService{
         }
     }
 
+    @Override
+    public void deLeteMedById(Long medId) {
+        medicationRepository.deleteById(medId);
+    }
+
     public BigDecimal calculateTotalMedWeight(List<Medication> droneMeds){
         // we are calculating the total weight for each med a drone has
         BigDecimal totalDroneMeds = BigDecimal.ZERO;
@@ -63,5 +66,13 @@ public class MedicationServiceImpl implements MedicationService{
             totalDroneMeds=totalDroneMeds.add(med.getWeight());
         }
         return totalDroneMeds;
+    }
+
+    //check attempt to overload drone
+    public Boolean checkDroneOverload(BigDecimal totPrevMeds, BigDecimal newWeight, BigDecimal droneWeight){
+        if(totPrevMeds.add(newWeight).compareTo(droneWeight) <=0){
+           return true;
+        }
+        return false;
     }
 }
