@@ -22,6 +22,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
+
 @Tag(name = "Dispatch Controller", description = "Dispatch controller to control drone activities")
 public class dispatchController {
     //wire drone service (done through allargs constructor
