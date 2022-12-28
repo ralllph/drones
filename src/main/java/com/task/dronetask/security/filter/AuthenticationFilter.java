@@ -80,7 +80,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         //create the header, first parameter authorization, second parameter bearer + token
         // response.addHeader(SecurityConstants.AUTHORIZATION, SecurityConstants.BEARER+token);
         //return the token as a response instead of header
-        response.getWriter().write("{Token:"+ " " + token+" }");
+        response.getWriter().write("{token:"+ " " + token+" }");
         response.getWriter().flush();
 
     }
