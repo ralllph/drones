@@ -1,9 +1,7 @@
 package com.task.dronetask.controller;
 
 import com.task.dronetask.converter.DroneConverter;
-import com.task.dronetask.converter.DroneConverterImpl;
 import com.task.dronetask.converter.MedConverter;
-import com.task.dronetask.converter.MedConverterImpl;
 import com.task.dronetask.dto.DroneDto;
 import com.task.dronetask.dto.MedDto;
 import com.task.dronetask.dto.RegDroneDto;
@@ -23,14 +21,13 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @Tag(name = "Dispatch Controller", description = "Dispatch controller to control drone activities")
-public class dispatchController {
+public class DispatchController {
     //wire drone service (done through allargs constructor
-   // @Autowired
     DroneService droneService;
-    //@Autowired
     MedicationService medicationService;
-   // @Autowired
+
     DroneConverter droneConverter;
+
     MedConverter medConverter;
 
     //Intercept drone register

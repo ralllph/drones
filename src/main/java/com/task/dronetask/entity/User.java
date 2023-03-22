@@ -1,16 +1,12 @@
 package com.task.dronetask.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Table(name = "users")
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -18,7 +14,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name ="user_name",nullable = false, unique = true)
+    @Column(name ="username",nullable = false, unique = true)
     private String userName;
 
     @Column(name = "password")

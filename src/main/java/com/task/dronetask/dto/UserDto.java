@@ -17,4 +17,12 @@ public class UserDto {
     @NotBlank(message = "password can't be blank")
     @NotNull
     private String password;
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

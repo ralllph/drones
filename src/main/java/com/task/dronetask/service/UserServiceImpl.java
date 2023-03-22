@@ -5,15 +5,24 @@ import com.task.dronetask.dto.UserDto;
 import com.task.dronetask.entity.User;
 import com.task.dronetask.exception.UserNotFoundException;
 import com.task.dronetask.repository.UserRepository;
+import com.task.dronetask.security.SpringSecurityUser.MyUserDetails;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements  UserService{
+public class UserServiceImpl implements  UserService, UserDetailsService {
     private UserRepository userRepo;
     private UserConverter userConverter;
 
@@ -25,8 +34,8 @@ public class UserServiceImpl implements  UserService{
         User userEntity = userConverter.userDtoToEntity(user);
         //hash the password before saving
         userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
-        userEntity = userRepo.save(userEntity);
-        return userConverter.userEntityToDto(userEntity);
+        User savedUser = userRepo.save(userEntity);
+        return userConverter.userEntityToDto(savedUser);
     }
 
     @Override
@@ -48,5 +57,22 @@ public class UserServiceImpl implements  UserService{
         else{
             throw  new UserNotFoundException(404L);
         }
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userRepo.findByUserName(username);
+        if(!user.isPresent()){
+            throw  new UserNotFoundException(404L);
+        }
+        User userFound = user.get();
+        return  new MyUserDetails(userFound.getUserName(), userFound.getPassword());
+    }
+
+    public List<GrantedAuthority>  getAuthorities(UserDto user) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        return authorities;
     }
 }

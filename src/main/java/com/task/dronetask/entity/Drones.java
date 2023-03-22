@@ -3,13 +3,9 @@ package com.task.dronetask.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.task.dronetask.enums.Model;
 import com.task.dronetask.enums.State;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -20,10 +16,7 @@ import java.util.List;
 @Table(name = "drones")
 //lombok dependency helps you remove boiler plate code
 //@getters creates all your getters
-@Getter
-@Setter
-//norags constructor creates an empty constructor
-@NoArgsConstructor
+@Data
 //allargs constructor creates a parametized constructor
 @AllArgsConstructor
 public class Drones {

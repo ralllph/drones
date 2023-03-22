@@ -5,47 +5,31 @@ import com.task.dronetask.dto.MedDto;
 import com.task.dronetask.dto.RegMedDto;
 import com.task.dronetask.entity.Drones;
 import com.task.dronetask.entity.Medication;
+import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class MedConverterImpl implements  MedConverter{
+    private final ModelMapper modelMapper;
 
     @Override
     public Medication medDtoToEntity(MedDto medDto) {
-        Medication medEntity = new Medication();
-        medEntity.setId(medDto.getId());
-        medEntity.setName(medDto.getName());
-        medEntity.setWeight(medDto.getWeight());
-        medEntity.setCode(medDto.getCode());
-        medEntity.setImage(medDto.getImage());
-        medEntity.setDrone(medDto.getDrone());
-        return medEntity;
+        return modelMapper.map(medDto, Medication.class);
     }
 
     @Override
     public MedDto medEntityToDto(Medication medEntity) {
-        MedDto medDto = new MedDto();
-        medDto.setId(medEntity.getId());
-        medDto.setName(medEntity.getName());
-        medDto.setWeight(medEntity.getWeight());
-        medDto.setCode(medEntity.getCode());
-        medDto.setImage(medEntity.getImage());
-        medDto.setDrone(medEntity.getDrone());
-        return  medDto;
+        return modelMapper.map(medEntity,MedDto.class);
     }
 
     @Override
     public RegMedDto medEntityToRegDto(Medication medEntity) {
-        RegMedDto medDto = new RegMedDto();
-        medDto.setId(medEntity.getId());
-        medDto.setName(medEntity.getName());
-        medDto.setWeight(medEntity.getWeight());
-        medDto.setCode(medEntity.getCode());
-        medDto.setImage(medEntity.getImage());
-        return  medDto;
+        return modelMapper.map(medEntity, RegMedDto.class);
     }
 
     @Override

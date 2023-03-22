@@ -4,12 +4,12 @@ import com.task.dronetask.security.filter.AuthenticationFilter;
 import com.task.dronetask.security.filter.CheckExceptionFilter;
 import com.task.dronetask.security.filter.JWTAuthorizationFilter;
 import lombok.AllArgsConstructor;
-import org.hibernate.annotations.Check;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -19,7 +19,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         //create new authentication filter
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager);
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager, new BCryptPasswordEncoder());
         // we want /authenticate to be processed by Auth filter
         authenticationFilter.setFilterProcessesUrl("/authenticate");
         http//means any http request goes through this chain

@@ -1,11 +1,9 @@
 package com.task.dronetask.service;
 
 import com.task.dronetask.dto.DroneDto;
-import com.task.dronetask.dto.MedDto;
 import com.task.dronetask.dto.RegDroneDto;
 import com.task.dronetask.dto.RegMedDto;
-import com.task.dronetask.entity.Drones;
-import com.task.dronetask.entity.Medication;
+
 
 import java.util.List;
 

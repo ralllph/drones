@@ -1,18 +1,15 @@
 package com.task.dronetask.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
-@Entity
-@Getter
-@Setter
+
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "battery_history")
 public class BatteryHistory {
     @Id
@@ -25,7 +22,6 @@ public class BatteryHistory {
 
     @Column(name = "time")
     private String time;
-
 
     @ManyToOne
     @JoinColumn(name = "drone_id", referencedColumnName = "id")

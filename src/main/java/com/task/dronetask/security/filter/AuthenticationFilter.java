@@ -7,9 +7,11 @@ import com.task.dronetask.entity.User;
 import com.task.dronetask.security.manager.CustomAuthenticationManager;
 import com.task.dronetask.security.manager.SecurityConstants;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -22,9 +24,11 @@ import java.util.Date;
 //we inherit  the username and password in order to have access to the override methods attempt authentication and successful authentication
 //note that the methods in this class only get called if you are actually doing an authentication else it goes to the next filter
 @AllArgsConstructor
+@Slf4j
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     //wire authentication manager as we need an object of it
     private CustomAuthenticationManager authenticationManager;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     //type in attempt authentication to view over ride
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -39,20 +43,25 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             //first argument is principal which identifies user asin user.getUsername
             //second argument is most often a password
             //the third is usually authorities
+            //hash the password before authentication
             Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUserName(),user.getPassword());
-           //pass in the authentication object to auth Manager
-            //we are returning the object authenticate from auth manager returns
-           return  authenticationManager.authenticate(authentication);
+            String testing = "TESTING";
+            log.info("Test string: {}",testing);
+            log.info("before auth usernaem: {}", user.getUserName());
+            log.info("before auth password: {}", user.getPassword());
+            Authentication authResult = authenticationManager.authenticate(authentication);
+            if(authResult.isAuthenticated()) {
+                log.info("SUCCESSFUL AUTHENTICATION");
+                return authResult;
+            } else {
+                throw new RuntimeException("Authentication failed: " + authResult);
+            }
+        } catch (IOException ioException) {
+            throw new RuntimeException("Error while parsing user credentials", ioException);
         }
-        catch (IOException ioException){
-            //note that custom exceptions and controller advice won't work here because the security filter comes before dispatcher servlet
-            // where those exceptions can be thrown
-            throw new RuntimeException();
+
         }
-        //this is auto generated and not needed
-        //return super.attemptAuthentication(request, response);
-        //getting to this point means authentication was successful. It now calls successful Authentication method
-    }
+
 
     @Override
     //method called when attempt auth fails

@@ -21,12 +21,11 @@ import java.util.Optional;
 @AllArgsConstructor
 @Service
 public class DroneServiceImpl implements  DroneService{
-    //autowire drone repo
-    //@Autowired
-    DroneRepository droneRepository;
-    DroneConverterImpl droneConverter;
-    MedConverter medConverter;
-    MedicationService medService;
+    private final DroneRepository droneRepository;
+    private final DroneConverterImpl droneConverter;
+    private final MedConverter medConverter;
+
+
 
     //register drone
     @Override

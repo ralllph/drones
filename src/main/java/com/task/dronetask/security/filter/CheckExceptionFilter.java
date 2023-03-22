@@ -3,6 +3,7 @@ package com.task.dronetask.security.filter;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.task.dronetask.exception.UserNotFoundException;
 import org.apache.catalina.filters.ExpiresFilter;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -36,9 +37,9 @@ public class CheckExceptionFilter extends OncePerRequestFilter {
             response.getWriter().write("JWT NOT VALID");    // send a bad request texxt
             response.getWriter().flush();
         }
-        catch(RuntimeException e){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("BAD REQUEST");    // send a bad request texxt
+        catch(BadCredentialsException e){
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("Wrong password");    // send a bad request texxt
             response.getWriter().flush();
         }
     }
