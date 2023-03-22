@@ -36,7 +36,9 @@ public class UserServiceImpl implements  UserService, UserDetailsService {
     public UserDto regUser(UserDto user) {
         User userEntity = userConverter.userDtoToEntity(user);
         //hash the password before saving
-        userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
+        String userPass = userEntity.getPassword();
+        String encodedPass = bCryptPasswordEncoder.encode(userPass);
+        userEntity.setPassword(encodedPass);
         User savedUser = userRepo.save(userEntity);
         return userConverter.userEntityToDto(savedUser);
     }
@@ -69,11 +71,14 @@ public class UserServiceImpl implements  UserService, UserDetailsService {
             User userFound = user.get();
             modelMapper.map(newUser, userFound);
             log.info("new user details: {}" + userFound.getUserName());
+            String userPass = userFound.getPassword();
+            String encodedPass = bCryptPasswordEncoder.encode(userPass);
+            userFound.setPassword(encodedPass);
             userRepo.save(userFound);
             return userConverter.userEntityToDto(userFound);
         }
         else {
-            throw new UserNotFoundException(404L);
+            throw new UserNotFoundException(userId);
         }
     }
 
@@ -92,5 +97,15 @@ public class UserServiceImpl implements  UserService, UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         return authorities;
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        Optional<User> user = userRepo.findById(userId);
+        if(user.isPresent()){
+            userRepo.deleteById(userId);
+        }else{
+            throw  new UserNotFoundException(userId);
+        }
     }
 }

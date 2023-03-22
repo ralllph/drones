@@ -12,4 +12,6 @@ public interface UserService{
 
     UserDto updateUser(Long userId,UserDto newUser);
     List<GrantedAuthority> getAuthorities(UserDto user);
+
+    void deleteUser(Long userId);
 }
