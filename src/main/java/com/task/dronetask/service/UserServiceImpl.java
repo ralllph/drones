@@ -7,6 +7,8 @@ import com.task.dronetask.exception.UserNotFoundException;
 import com.task.dronetask.repository.UserRepository;
 import com.task.dronetask.security.SpringSecurityUser.MyUserDetails;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,14 +18,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserServiceImpl implements  UserService, UserDetailsService {
     private UserRepository userRepo;
+    private ModelMapper modelMapper;
     private UserConverter userConverter;
 
     // bean created in sprigboot main app
@@ -56,6 +59,21 @@ public class UserServiceImpl implements  UserService, UserDetailsService {
         }
         else{
             throw  new UserNotFoundException(404L);
+        }
+    }
+
+    @Override
+    public UserDto updateUser(Long userId, UserDto newUser) {
+        Optional<User> user = userRepo.findById(userId);
+        if(user.isPresent()){
+            User userFound = user.get();
+            modelMapper.map(newUser, userFound);
+            log.info("new user details: {}" + userFound.getUserName());
+            userRepo.save(userFound);
+            return userConverter.userEntityToDto(userFound);
+        }
+        else {
+            throw new UserNotFoundException(404L);
         }
     }
 

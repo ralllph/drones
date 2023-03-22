@@ -10,5 +10,6 @@ public interface UserService{
     UserDto findUserById(Long id);
     UserDto findByUsername(String userName);
 
+    UserDto updateUser(Long userId,UserDto newUser);
     List<GrantedAuthority> getAuthorities(UserDto user);
 }
