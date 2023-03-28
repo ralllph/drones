@@ -1,4 +1,4 @@
-package com.task.dronetask.config.avers;
+package com.task.dronetask.config.javers;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;

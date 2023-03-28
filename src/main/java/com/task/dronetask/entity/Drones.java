@@ -19,6 +19,7 @@ import java.util.List;
 @Data
 //allargs constructor creates a parametized constructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Drones {
     //@ column helps create a column in the table
     //remember to add the id for each entity, the id here is model

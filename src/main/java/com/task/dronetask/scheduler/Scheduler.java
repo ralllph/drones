@@ -26,13 +26,14 @@ public class Scheduler {
 
     @Scheduled(fixedDelayString = "PT10S", initialDelay = 3000)
     public void fixedDelaySch() {
+        /*
         for(DroneDto drone:droneService.getAllDrones()){
             BatteryHistory battery = new BatteryHistory();
             battery.setBatteryPercent(drone.getBatteryCapacity());
             battery.setTime(timeStampPattern.format(LocalDateTime.now()));
             battery.setDrone(droneConverter.droneDtoToEntity(drone));
             batteryRepository.save(battery);
-        }
+        }*/
     }
 
 }

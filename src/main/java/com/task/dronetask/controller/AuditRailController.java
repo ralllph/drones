@@ -2,18 +2,18 @@ package com.task.dronetask.controller;
 
 import com.task.dronetask.entity.User;
 import com.task.dronetask.service.AuditBuilder;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -23,14 +23,16 @@ public class AuditRailController {
 
     private final AuditBuilder auditBuilder;
 
-    @GetMapping("/dateRangeSnapshots")
-    public ResponseEntity<String> getDateRangeSnapshots(
-            @RequestParam("startDate") @DateTimeFormat(pattern =  "dd/MM/yyyy HH:mm:ss" ) LocalDateTime startDate,
-            @RequestParam("endDate") @DateTimeFormat(pattern =  "dd/MM/yyyy HH:mm:ss") LocalDateTime endDate
+    @GetMapping("/dateRangeSnapshots/{type}")
+    public ResponseEntity<List<Object>> getDateRangeSnapshots(
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @PathVariable String type
     ){
         log.info("start date:" + " "+ startDate);
-        log.info("start date:" + " "+  endDate);
-        return new ResponseEntity<>(auditBuilder.getEntitiesCreated(User.class,startDate,endDate), HttpStatus.OK);
+        log.info("end date:" + " "+  endDate);
+        log.info("type:" + " "+  type);
+        return new ResponseEntity<>(auditBuilder.getChanges(User.class,startDate,endDate,type), HttpStatus.OK);
     }
 
 }

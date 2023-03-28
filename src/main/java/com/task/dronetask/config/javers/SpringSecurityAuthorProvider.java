@@ -1,4 +1,4 @@
-package com.task.dronetask.config.avers;
+package com.task.dronetask.config.javers;
 
 import com.task.dronetask.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;

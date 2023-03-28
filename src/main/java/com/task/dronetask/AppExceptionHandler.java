@@ -36,6 +36,11 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         //remember response entity  and serialization where spring boot would go to errResponse and change the object to json before returning it
         return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(TypeNotRecognisedException.class)
+    public ResponseEntity<Object> handleDDroneNotFoundException(TypeNotRecognisedException exception){
+        ErrorResponse error = new ErrorResponse(Arrays.asList(exception.getLocalizedMessage()));
+        return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(DroneWeightExceededException.class)
     public ResponseEntity<Object> handleDroneWeightExceededException(DroneWeightExceededException exception){

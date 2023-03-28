@@ -1,4 +1,4 @@
-package com.task.dronetask.config.avers;
+package com.task.dronetask.config.javers;
 
 import org.javers.spring.auditable.AuthorProvider;
 import org.springframework.context.annotation.Bean;
